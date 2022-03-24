@@ -22,8 +22,6 @@ data:
       - 128.28.28.1-128.28.28.20
 EOF
 
-kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/metalconfig.yml
-
 cat <<EOF | sudo tee /vagrant/nginxconfigmap.yml
 apiVersion: v1
 kind: ConfigMap
@@ -91,6 +89,12 @@ spec:
   type: LoadBalancer
 EOF
 
+sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/metalconfig.yml
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/nginxconfigmap.yml
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/nginxdeployment.yml
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/nginxservice.yml
+
+rm /vagrant/metalconfig.yml
+rm /vagrant/nginxconfigmap.yml
+rm /vagrant/nginxdeployment.yml
+rm /vagrant/nginxservice.yml
