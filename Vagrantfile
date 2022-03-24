@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
       end  
       
       if box.vm.hostname == "loadbalancer" then
-        box.vm.provision "shell", path:"./install-haproxy-bird.sh"
+        box.vm.provision "shell", path:"./install-haproxy-frr.sh"
       end
 
       if box.vm.hostname != "loadbalancer" then
