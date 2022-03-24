@@ -1,0 +1,1 @@
+rm /vagrant/join_command.sh

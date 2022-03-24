@@ -34,6 +34,7 @@ Vagrant.configure("2") do |config|
       
       if box.vm.hostname == "worker" then
         box.vm.provision "shell", path:"./exec-join-command.sh"
+        box.vm.provision "shell", path:"./delete-join-command.sh"
       end
     end
   end
