@@ -19,10 +19,32 @@ data:
     - name: default
       protocol: bgp
       addresses:
-      - 126.23.45.1-126.23.45.20
+      - 128.28.28.1-128.28.28.20
 EOF
 
 kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/metalconfig.yml
+
+cat <<EOF | sudo tee /vagrant/nginxconfigmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: index-html-configmap
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>FRR</title>
+    </head>
+    <body>
+
+    <h1>FRR is load balancing</h1>
+    <p>Metallb + FRR setup.</p>
+
+    </body>
+    </html>
+EOF
 
 cat <<EOF | sudo tee /vagrant/nginxdeployment.yml
 apiVersion: apps/v1
@@ -44,6 +66,13 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
+        volumeMounts:
+          - name: nginx-index-file
+            mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: nginx-index-file
+        configMap:
+          name: index-html-configmap
 EOF
 
 cat <<EOF | sudo tee /vagrant/nginxservice.yml
@@ -62,5 +91,6 @@ spec:
   type: LoadBalancer
 EOF
 
+sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/nginxconfigmap.yml
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/nginxdeployment.yml
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f /vagrant/nginxservice.yml
