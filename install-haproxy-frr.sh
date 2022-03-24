@@ -59,12 +59,33 @@ sed -i "s/bgpd=no/bgpd=yes/" /etc/frr/daemons
 # /etc/frr/frr.conf
 cat <<EOF | sudo tee -a /etc/frr/frr.conf  
 ip route 128.28.28.1/32 172.42.42.102
+ip route 128.28.28.1/32 172.42.42.103
+
+bfd
+  profile full1
+    receive-interval 179
+    transmit-interval 150
+    echo receive-interval 62
+    echo transmit-interval 62
+    minimum-ttl 254
+  peer 172.42.42.101
+    profile full1
+    no shutdown
+  peer 172.42.42.102
+    profile full1
+    no shutdown
+  peer 172.42.42.103
+    profile full1
+    no shutdown
 
 router bgp 64600
   bgp router-id 172.42.42.100
   neighbor 172.42.42.101 remote-as 64600
+  neighbor 172.42.42.101 bfd
   neighbor 172.42.42.102 remote-as 64600
-!
+  neighbor 172.42.42.102 bfd
+  neighbor 172.42.42.103 remote-as 64600
+  neighbor 172.42.42.103 bfd
 EOF
 
 systemctl daemon-reload

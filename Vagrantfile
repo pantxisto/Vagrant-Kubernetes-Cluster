@@ -5,7 +5,8 @@ Vagrant.configure("2") do |config|
   boxes = [
     { :name => "loadbalancer", :ip => "172.42.42.100", :cpus => 2, :memory => 2048 },
     { :name => "master", :ip => "172.42.42.101", :cpus => 2, :memory => 2048 },
-    { :name => "worker", :ip => "172.42.42.102", :cpus => 2, :memory => 2048 },
+    { :name => "worker1", :ip => "172.42.42.102", :cpus => 2, :memory => 2048 },
+    { :name => "worker2", :ip => "172.42.42.103", :cpus => 2, :memory => 2048 },
   ]  
 
   boxes.each do |opts|
@@ -32,7 +33,11 @@ Vagrant.configure("2") do |config|
         box.vm.provision "shell", path:"./install-flannel-metallb-nginx.sh"
       end
       
-      if box.vm.hostname == "worker" then
+      if box.vm.hostname == "worker1" then
+        box.vm.provision "shell", path:"./exec-join-command.sh"
+      end
+
+      if box.vm.hostname == "worker2" then
         box.vm.provision "shell", path:"./exec-join-command.sh"
         box.vm.provision "shell", path:"./delete-join-command.sh"
       end
