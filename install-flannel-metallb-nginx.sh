@@ -1,5 +1,15 @@
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 
+# see what changes would be made, returns nonzero returncode if different
+sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf get configmap kube-proxy -n kube-system -o yaml | \
+sed -e "s/strictARP: false/strictARP: true/" | \
+sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf diff -f - -n kube-system
+
+# actually apply the changes, returns nonzero returncode on errors only
+sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf get configmap kube-proxy -n kube-system -o yaml | \
+sed -e "s/strictARP: false/strictARP: true/" | \
+sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f - -n kube-system
+
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
 sudo kubectl  --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
 
@@ -12,7 +22,7 @@ metadata:
 data:
   config: |
     peers:
-    - peer-address: 172.42.42.100
+    - peer-address: 10.0.0.1
       peer-asn: 64600
       my-asn: 64600
     address-pools:

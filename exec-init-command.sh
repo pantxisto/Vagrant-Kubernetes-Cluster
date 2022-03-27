@@ -3,3 +3,5 @@ kubeadm init --control-plane-endpoint="172.42.42.100:6443" --upload-certs --apis
 kubeadm token create --print-join-command | tee /vagrant/join_command.sh
 
 chmod +x /vagrant/join_command.sh
+
+cp /etc/kubernetes/admin.conf /vagrant/.

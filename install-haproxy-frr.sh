@@ -53,18 +53,18 @@ apt install -y frr frr-pythontools
 # /etc/frr/daemons
 sed -i "s/bgpd=no/bgpd=yes/" /etc/frr/daemons
 
-# Add static and bgp configuration
-# One static route per worker node
+sed -i "s/bgpd=no/bgpd=yes/" /etc/frr/daemons
 
 # /etc/frr/frr.conf
 cat <<EOF | sudo tee -a /etc/frr/frr.conf  
-ip route 128.28.28.1/32 172.42.42.102
+
+ip nht resolve-via-default
 
 router bgp 64600
-  bgp router-id 172.42.42.100
-  neighbor 172.42.42.101 remote-as 64600
-  neighbor 172.42.42.102 remote-as 64600
-!
+  bgp router-id 10.0.0.1
+  neighbor 10.0.0.2 remote-as 64600
+  neighbor 10.0.0.3 remote-as 64600
+  neighbor 10.0.0.4 remote-as 64600
 EOF
 
 systemctl daemon-reload
