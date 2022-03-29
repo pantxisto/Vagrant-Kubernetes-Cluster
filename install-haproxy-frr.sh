@@ -53,38 +53,16 @@ apt install -y frr frr-pythontools
 # /etc/frr/daemons
 sed -i "s/bgpd=no/bgpd=yes/" /etc/frr/daemons
 
-sed -i "s/bfdd=no/bfdd=yes/" /etc/frr/daemons
-
 # /etc/frr/frr.conf
 cat <<EOF | sudo tee -a /etc/frr/frr.conf  
 
 ip nht resolve-via-default
 
-bfd
-  profile full1
-    receive-interval 179
-    transmit-interval 150
-    echo receive-interval 62
-    echo transmit-interval 62
-    minimum-ttl 254
-  peer 10.0.0.2
-    profile full1
-    no shutdown
-  peer 10.0.0.3
-    profile full1
-    no shutdown
-  peer 10.0.0.4
-    profile full1
-    no shutdown
-    
 router bgp 64600
   bgp router-id 10.0.0.1
   neighbor 10.0.0.2 remote-as 64600
-  neighbor 10.0.0.2 bfd
   neighbor 10.0.0.3 remote-as 64600
-  neighbor 10.0.0.3 bfd
   neighbor 10.0.0.4 remote-as 64600
-  neighbor 10.0.0.4 bfd
 EOF
 
 systemctl daemon-reload
