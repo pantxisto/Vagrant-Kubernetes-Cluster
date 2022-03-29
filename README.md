@@ -6,4 +6,4 @@ Kubernetes Cluster with metallb (BGP), FRR and gre tunnel. 1 master node and 2 w
 - cd Vagrant-Kubernetes-Cluster
 - vagrant up
 
-Actually the web page is showing on 172.42.42.100
+The web page is showing on 172.42.42.100
