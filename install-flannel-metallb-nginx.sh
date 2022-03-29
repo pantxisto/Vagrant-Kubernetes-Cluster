@@ -808,3 +808,4 @@ rm /vagrant/metalconfig.yml
 rm /vagrant/nginxconfigmap.yml
 rm /vagrant/nginxdeployment.yml
 rm /vagrant/nginxservice.yml
+rm /vagrant/metal-frr.yaml 
