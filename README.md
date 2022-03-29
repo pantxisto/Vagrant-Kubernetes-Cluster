@@ -6,4 +6,4 @@ Kubernetes Cluster with metallb (BGP) and FRR. 1 master node and 1 worker node.
 - cd Vagrant-Kubernetes-Cluster
 - vagrant up
 
-Actually the web page is showing on 172.42.42.100
+The web page is showing on 172.42.42.100
