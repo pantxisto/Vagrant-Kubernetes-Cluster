@@ -53,7 +53,7 @@ apt install -y frr frr-pythontools
 # /etc/frr/daemons
 sed -i "s/bgpd=no/bgpd=yes/" /etc/frr/daemons
 
-sed -i "s/bgpd=no/bgpd=yes/" /etc/frr/daemons
+sed -i "s/bfdd=no/bfdd=yes/" /etc/frr/daemons
 
 # /etc/frr/frr.conf
 cat <<EOF | sudo tee -a /etc/frr/frr.conf  
