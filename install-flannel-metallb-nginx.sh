@@ -25,6 +25,7 @@ data:
     - peer-address: 10.0.0.1
       peer-asn: 64600
       my-asn: 64600
+      hold-time: 3s
     address-pools:
     - name: default
       protocol: bgp
